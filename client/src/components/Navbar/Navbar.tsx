@@ -4,6 +4,8 @@ import NavbarLink from "./NavLink/NavbarLink";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import {ReactComponent as Logo} from "./assets/logo.svg"
+ import {ReactComponent as LogOut} from "./assets/logout.svg"
+ import {Button} from "react-bootstrap";
 
  function generateAvatar(
      text: string,
@@ -38,10 +40,18 @@ import {ReactComponent as Logo} from "./assets/logo.svg"
 
 const Navbar = observer(() => {
     const {user} = useContext(Context)
+
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAdmin(false)
+        user.setIsAuth(false)
+        user.setIsWaiter(false)
+    }
+
     return(
         <div className={s.nav}>
                 <div className={s.dividing}>
-                    <Logo />
+                    <Logo className = {s.logo} />
                     <div className={s.nav_links}>
                         <NavbarLink link='/' name='Пациенты' />
                         <NavbarLink link='/receptions' name='Приемы' />
@@ -55,6 +65,7 @@ const Navbar = observer(() => {
                         {user.isAdmin ? <p>Администратор</p> : <p>Врач</p>}
                         <p style={{fontSize: 18, fontWeight: 500}}>{user.login}</p>
                     </div>
+                    <button className={s.logout_button} onClick={logOut}><LogOut className={s.logout_icon}/></button>
                 </div>
         </div>
     )

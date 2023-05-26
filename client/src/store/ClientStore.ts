@@ -4,7 +4,7 @@ export default class ClientStore{
     _data: any;
     _receptions: any;
     constructor() {
-        this._data = {id: 1, first_name: 'Владислав', surname: "Растегаев", middle_name: "Алексеевич", birth: '17.09.2004', phone: '+79127864632'}
+        this._data = {}
         this._receptions = []
 
         makeAutoObservable(this)

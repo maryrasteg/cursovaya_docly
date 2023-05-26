@@ -3,17 +3,20 @@ import {Routes, Route, Navigate } from 'react-router-dom';
 import {authRoutes, publicRoutes, adminRoutes} from '../routes';
 import { LOGIN_ROUTE } from '../utils/consts';
 import { Context } from '../index';
+import {observer} from "mobx-react-lite";
 
 
-const AppRouter = () => {
+const AppRouter = observer(() => {
   const {user} = useContext(Context)
+
   console.log(user)
+    console.log('auth' + user.isAuth)
   return (
         <Routes>
-            {user.isAuth && authRoutes.map(({path, Component}) =>
+            {(user.isAuth && !user.isWaiter) && authRoutes.map(({path, Component}) =>
               <Route key={path} path={path} element={<Component/>}/>
             )}
-            {(user.isAuth && user.isAdmin) && adminRoutes.map(({path, Component}) =>
+            {(user.isAuth && user.isAdmin && !user.isWaiter) && adminRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>}/>
             )}
             {publicRoutes.map(({path, Component}) =>
@@ -22,7 +25,7 @@ const AppRouter = () => {
             <Route path='*' element={<Navigate to={LOGIN_ROUTE}/>} />
         </Routes>
   )
-}
+})
 
 
 export default AppRouter

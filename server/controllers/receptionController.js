@@ -5,16 +5,7 @@ class ReceptionController {
     async add(req, res, next) {
         try {
             const {doctorId, clientId, date, time, procedureId, note} = req.body
-            const reception = await Reception.create({doctorId, clientId, date, time, procedureId})
-
-            if(note){
-                Note.create({
-                    receptionId: reception.id,
-                    note: note,
-                    clientId: clientId
-                })
-            }
-
+            const reception = await Reception.create({doctorId, clientId, date, time, procedureId, note})
             return res.json(reception)
         } catch (e) {
             next(ApiError.basRequest(e.message))
@@ -26,8 +17,8 @@ class ReceptionController {
     }
 
     async getForClient(req, res) {
-        const {clientid} = req.params
-        const reception = await Reception.findAll({where: {clientId: clientid}, include: [{model: Note, as: 'note'}]})
+        const {id} = req.params
+        const reception = await Reception.findAll({where: {clientId: id}})
         return res.json(reception)
     }
 }

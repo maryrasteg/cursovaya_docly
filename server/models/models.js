@@ -16,7 +16,6 @@ const Client = sequelize.define('client',{
     genderId: {type: DataTypes.INTEGER, allowNull: true},
     phone: {type: DataTypes.STRING, allowNull: true},
     birth: {type: DataTypes.DATEONLY, allowNull: true},
-    visits: {type: DataTypes.INTEGER, allowNull: true}
 })
 
 const Doctor = sequelize.define('doctor',{
@@ -55,13 +54,6 @@ const Gender = sequelize.define('gender',{
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
-const Note = sequelize.define('note',{
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    receptionId: {type: DataTypes.INTEGER, allowNull: false},
-    clientId: {type: DataTypes.INTEGER, allowNull: false},
-    note: {type: DataTypes.STRING, allowNull: true},
-})
-
 // Doctor.hasMany(Reception)
 // Reception.belongsTo(Doctor)
 
@@ -72,12 +64,6 @@ Reception.belongsTo(Doctor)
 
 Reception.hasOne(Procedure)
 Procedure.belongsTo(Reception)
-
-Reception.hasOne(Note)
-Note.belongsTo(Reception)
-
-Client.hasMany(Note)
-Note.belongsTo(Client)
 
 Client.hasOne(Gender)
 Gender.belongsTo(Client)
@@ -93,5 +79,4 @@ module.exports = {
     Procedure,
     Position,
     Gender,
-    Note,
 }

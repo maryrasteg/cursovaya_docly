@@ -9,6 +9,7 @@ import ReceptionsStore from './store/ReceptionsStore';
 import ReceptionStore from './store/ReceptionStore';
 
 export const Context = createContext(null as any)
+console.log(process.env.REACT_APP_API_URL)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

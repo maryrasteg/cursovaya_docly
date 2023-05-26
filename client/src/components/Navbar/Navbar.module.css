@@ -1,6 +1,8 @@
 .nav{
     margin-top: 0;
     width: 328px;
+    max-width: 328px;
+    min-width: 328px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -30,7 +32,7 @@
     gap: 4px;
 }
 
-svg{
+.logo{
     width: 180px;
     height: 52px;
     margin-bottom: 22px;
@@ -60,4 +62,23 @@ svg{
     height: 50px;
     width: 50px;
     border-radius: 12px;
+}
+
+.logout_icon{
+    width: 16px;
+    height: 16px;
+}
+
+.logout_button{
+    background: rgba(67, 88, 117, 0.05);
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid rgba(67, 88, 117, 0.22);
+    border-radius: 8px;
+    margin-left: 12px;
+}
+
+.logout_button:hover{
+    background: rgba(67, 88, 117, 0.10);
+    transition: 300ms;
 }

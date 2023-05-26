@@ -1,5 +1,6 @@
 const ApiError = require('../error/ApiError')
-const {Client} = require('../models/models')
+const {Client, Reception, Doctor} = require('../models/models')
+const {forEach} = require("react-bootstrap/ElementChildren");
 
 
 class ClientController {
@@ -36,7 +37,9 @@ class ClientController {
     async getOne(req, res) {
         const {id} = req.params
         const client = await Client.findOne({where: {id}})
-        return res.json(client)
+        const receptions = await Reception.findAll({where: {clientId: id}, include: { model: Doctor, required: true },})
+        const result = {"client": client, "receptions": receptions}
+        return res.json(result)
     }
 }
 

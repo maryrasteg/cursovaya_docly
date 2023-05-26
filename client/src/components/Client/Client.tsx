@@ -1,64 +1,134 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import {observer} from "mobx-react-lite";
 import s from './Client.module.css'
-import {Context} from "../../index";
 import {Route, useNavigate} from "react-router-dom";
-import {CLIENTS_ROUTE} from "../../utils/consts";
-import {Form, Button, Dropdown} from "react-bootstrap";
+import {CLIENT_ROUTE, CLIENTS_ROUTE, RECEPTION_ROUTE} from "../../utils/consts";
+import {Form, Button, Dropdown, FormGroup} from "react-bootstrap";
+import {getOneClient, updateClient} from "../../http/clientAPI";
+import {useParams} from 'react-router-dom'
 
 
 const Client = observer(() => {
     const navigate  = useNavigate()
-    const {client} = useContext(Context)
+    const [receptions, setReceptions] = useState([])
     const [editMode, setEditMode] = useState(false);
+
+    const {id} = useParams()
+
+    const [surname, setSurname] = useState("")
+    const [first_name, setFirst_name] = useState("")
+    const [middle_name, setMiddle_name] = useState("")
+    const [birth, setBirth] = useState("")
+    const [phone, setPhone] = useState("")
+
+
+    useEffect(() => {
+        getOneClient(id).then((data: any) => {
+            setReceptions(data.data.receptions)
+            setSurname(data.data.client.surname)
+            setFirst_name(data.data.client.first_name)
+            setMiddle_name(data.data.client.middle_name)
+            setBirth(data.data.client.birth)
+            setPhone(data.data.client.phone)
+        })
+
+    }, [])
+
+    const update = async () => {
+        if(surname != "" && first_name != ""){
+            await updateClient(id, surname, first_name, middle_name, birth, phone)
+        }
+        else alert("Недостаточно данных: фамилия или имя не могут быть пустыми")
+    }
+
 
     const toggleEditMode = () => {
         setEditMode(current => !current);
+        if (editMode) {
+            window.location.reload();
+        }
     };
 
     return(
         <div className={s.client_wrapper}>
             <div className={s.buttons_wrapper}>
                 <Button className="rounded-3" style={{height: 50, marginTop: 22, width: 240}} variant={"outline-secondary"} onClick={() => {navigate(CLIENTS_ROUTE)}}>Назад</Button>
-                <Button className="rounded-3 " style={{height: 50, marginTop: 22, paddingRight: 32, paddingLeft: 32}} variant={"outline-primary"} onClick={toggleEditMode}>{editMode ? "Отменить" : "Редактировать"}</Button>
+                <Button className="rounded-3 " style={{height: 50, marginTop: 22, paddingRight: 32, paddingLeft: 32}} variant={"outline-primary"} onClick={toggleEditMode} >{editMode ? "Отменить" : "Редактировать"}</Button>
             </div>
             {!editMode ? (
                 <Form className='d-flex flex-column' style={{width: "100%", borderRadius: 12}}>
                     <Form.Label style={{textAlign:"left"}}>Фамилия</Form.Label>
-                    <Form.Control placeholder={client.data.surname} value={client.data.surname} style={{height: 50}} readOnly/>
+                    <Form.Control placeholder={surname} value={surname} style={{height: 50}} readOnly/>
                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Имя</Form.Label>
-                    <Form.Control placeholder={client.data.first_name} defaultValue={client.data.first_name} style={{height: 50}} readOnly />
+                    <Form.Control placeholder={first_name} defaultValue={first_name} style={{height: 50}} readOnly />
                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Отчество</Form.Label>
-                    <Form.Control placeholder={client.data.middle_name} defaultValue={client.data.middle_name} style={{height: 50}} readOnly />
-                    <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>
-                    <Form.Control placeholder={client.data.birth} defaultValue={client.data.birth} style={{height: 50}} readOnly />
-                    <Form.Label style={{textAlign:"left",  marginTop: 12}}>Номер телефона</Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle variant={"outline-secondary"}>Выберите что-то (будет пол)</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item>Hello</Dropdown.Item>
-                            <Dropdown.Item>Bye</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Form.Control placeholder={client.data.phone} defaultValue={client.data.phone} style={{height: 50}} readOnly />
+                    <Form.Control placeholder={middle_name} defaultValue={middle_name} style={{height: 50}} readOnly />
+                    <FormGroup className='d-flex flex-row rounded-3 gap-3'>
+                        <FormGroup className='d-flex flex-column w-100'>
+                            <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>
+                            <Form.Control placeholder={birth} defaultValue={birth} type={'date'} style={{height: 50}} readOnly />
+                        </FormGroup>
+                        <FormGroup className='d-flex flex-column w-100'>
+                            <Form.Label style={{textAlign:"left",  marginTop: 12}}>Номер телефона</Form.Label>
+                            <Form.Control placeholder={phone} defaultValue={phone} style={{height: 50}} readOnly />
+                        </FormGroup>
+                    </FormGroup>
                 </Form>)
                 : (
                     <Form className='d-flex flex-column rounded-3' style={{width: "100%"}} >
                         <Form.Label style={{textAlign:"left"}}>Фамилия</Form.Label>
-                        <Form.Control className="rounded-3" placeholder={client.data.surname} value={client.data.surname} style={{height: 50, background: "#EDF3FC"}} />
+                        <Form.Control className="rounded-3" placeholder={surname} value={surname} onChange={e => setSurname(e.target.value)} style={{height: 50, background: "#EDF3FC"}} />
                         <Form.Label style={{textAlign:"left",  marginTop: 12}}>Имя</Form.Label>
-                        <Form.Control className="rounded-3" placeholder={client.data.first_name} defaultValue={client.data.first_name} style={{height: 50, background: "#EDF3FC"}}  />
+                        <Form.Control className="rounded-3" placeholder={first_name} defaultValue={first_name} onChange={e => setFirst_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
                         <Form.Label style={{textAlign:"left",  marginTop: 12}}>Отчество</Form.Label>
-                        <Form.Control className="rounded-3" placeholder={client.data.middle_name} defaultValue={client.data.middle_name} style={{height: 50, background: "#EDF3FC"}}  />
-                        <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>
-                        <Form.Control className="rounded-3" placeholder={client.data.birth} defaultValue={client.data.birth} style={{height: 50, background: "#EDF3FC"}}  />
-                        <Form.Label style={{textAlign:"left",  marginTop: 12}}>Номер телефона</Form.Label>
-                        <Form.Control className="rounded-3" placeholder={client.data.phone} defaultValue={client.data.phone} style={{height: 50, background: "#EDF3FC"}}  />
-                        <Button variant={"primary"} style={{height: 60, marginTop: 32}} className="rounded-3">Сохранить</Button>
+                        <Form.Control className="rounded-3" placeholder={middle_name} defaultValue={middle_name} onChange={e => setMiddle_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                        <FormGroup className='d-flex flex-row rounded-3 gap-3'>
+                            <FormGroup className='d-flex flex-column w-100'>
+                                <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>
+                                <Form.Control className="rounded-3" placeholder={birth} defaultValue={birth} onChange={e => setBirth(e.target.value)} style={{height: 50, background: "#EDF3FC"}} type={'date'}  />
+                            </FormGroup>
+                            <FormGroup className='d-flex flex-column w-100'>
+                                <Form.Label style={{textAlign:"left",  marginTop: 12}}>Номер телефона</Form.Label>
+                                <Form.Control className="rounded-3" placeholder={phone} defaultValue={phone} onChange={e => setPhone(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                            </FormGroup>
+                        </FormGroup>
+                        <Button variant={"primary"} style={{height: 60, marginTop: 32}} className="rounded-3" onClick={update}>Сохранить</Button>
                     </Form>)
             }
+
+            {(!editMode && receptions.length != 0) && (<div className={s.table_wrapper}>
+                <p className={s.table_header}>Примы пациента</p>
+                <table>
+                    <thead>
+                    <tr style={{height: 40}} className={s.trh}>
+                        <th style={{width: "25%"}} className={s.tdh}>Врач</th>
+                        <th style={{width: "25%"}} className={s.tdh}>Процедура</th>
+                        <th style={{width: "25%"}} className={s.tdh}>Дата</th>
+                        <th style={{width: "25%"}} className={s.tdh}>Время</th>
+                    </tr>
+                    </thead>
+                </table>
+                <SimpleBar className={s.table_content_wrapper}>
+                    <table>
+
+                        <tbody className={s.tb}>
+                        {receptions.map((reception: any) =>
+                            <tr className={s.trb} onClick={() => navigate(RECEPTION_ROUTE + '/' + reception.id)}>
+                                <td style={{width: "25%"}} className={s.tdb}>{reception.doctor.surname + ' ' + reception.doctor.first_name[0] + '.' + reception.doctor.middle_name[0] + '.'}</td>
+                                <td style={{width: "25%"}} className={s.tdb}>{reception.procedureId}</td>
+                                <td style={{width: "25%"}} className={s.tdb}>{reception.date && (reception.date).split("-").reverse().join(".")}</td>
+                                <td style={{width: "25%"}} className={s.tdb}>{reception.time}</td>
+                            </tr>
+                        )}
+
+
+
+                        </tbody>
+                    </table>
+                </SimpleBar>
+            </div>)}
 
         </div>
     )
