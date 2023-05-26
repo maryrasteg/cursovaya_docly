@@ -1,0 +1,63 @@
+.nav{
+    margin-top: 0;
+    width: 328px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    gap:22px;
+    border-right: 2px solid rgba(67, 88, 117, 0.08);
+    font-weight: 400;
+    justify-content: space-between;
+    background: #FDFDFF;
+}
+
+.dividing{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap:22px;
+    font-weight: 400;
+}
+
+.hidden{
+    display: none;
+}
+
+.nav_links{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+svg{
+    width: 180px;
+    height: 52px;
+    margin-bottom: 22px;
+}
+
+.user{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    justify-content: left;
+}
+
+.user p {
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+}
+
+.user_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.user_wrapper img{
+    height: 50px;
+    width: 50px;
+    border-radius: 12px;
+}

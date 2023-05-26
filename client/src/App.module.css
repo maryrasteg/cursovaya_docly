@@ -1,0 +1,12 @@
+.app_wrapper {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app_content{
+  height: 100%;
+  width: 100%;
+}

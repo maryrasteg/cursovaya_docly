@@ -1,0 +1,14 @@
+.client_wrapper{
+    padding: 40px;
+    background: #FDFDFF;
+    border-radius: 12px;
+    border: 2px solid rgba(67, 88, 117, 0.08);
+    width: 600px;
+}
+
+.buttons_wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}

@@ -1,0 +1,33 @@
+
+.active {
+    font-weight: 500;
+    background: rgba(67, 88, 117, 0.08);
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 0px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.linkWrapper {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 0px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.linkWrapper:hover{
+    background: rgba(67, 88, 117, 0.08);
+    transition: 300ms;
+}
+
+.linkText {
+    text-align: left;
+    font-size: 14px;
+    color: #435875;
+}
