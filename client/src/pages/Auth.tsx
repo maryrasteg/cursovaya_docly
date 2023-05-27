@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Container, Form, Card, Button} from "react-bootstrap";
 import {Navigate, NavLink, useLocation, useNavigate} from "react-router-dom";
 import {CLIENTS_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
@@ -12,7 +12,25 @@ const Auth = observer(() => {
     const isLogin = location.pathname === LOGIN_ROUTE
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
+    const [loginDirty, setLoginDirty] = useState(false)
+    const [passwordDirty, setPasswordDirty] = useState(false)
+    const [loginError, setLoginError] = useState('')
+    const [passwordError, setPasswordError] = useState('')
+    const [formValid, setFormValid] = useState(true)
+    const [error, setError] = useState('')
+
+
     const navigate  = useNavigate()
+
+    useEffect(()=>{
+        if (loginError || passwordError) {
+            setFormValid(false)
+        } else {
+            setFormValid(true)
+        }
+
+    }, [loginError, passwordError])
+
     const click = async () => {
         try {
             let data
@@ -32,9 +50,53 @@ const Auth = observer(() => {
                 user.setIsWaiter(true)
             }
         } catch (e: any) {
-            alert(e.response.data.message)
+            setError(e.response.data.message)
         }
 
+    }
+
+    const loginHandler = (e: any) => {
+        setLogin(e.target.value)
+        if (!isLogin) {
+            const re = /^[a-zA-Z0-9_\.]+$/
+            if(!re.test(String(e.target.value).toLowerCase())){
+                setLoginError('Некорректный логин')
+                if(!e.target.value) {
+                    setLoginError('Логин не может быть пустым')
+                }
+
+            }else {
+                setLoginError('')
+            }
+        } else {
+                setLoginError('')
+            }
+    }
+
+    const passwordHandler = (e: any) => {
+        setPassword(e.target.value)
+        if (!isLogin) {
+            if(e.target.value.length < 6 || e.target.value.length > 16){
+                setPasswordError('Пароль должен содержать от 6 до 16 символов')
+                if(!e.target.value) {
+                    setPasswordError('Пароль не может быть пустым')
+                }
+                }else {
+                setPasswordError('')
+                }
+        } else {
+            setPasswordError('')
+        }
+    }
+    const blurHandler = (e:any) => {
+        switch(e.target.name){
+            case 'login':
+                setLoginDirty(true)
+                break
+            case 'password':
+                setPasswordDirty(true)
+                break
+        }
     }
 
     return (
@@ -43,19 +105,27 @@ const Auth = observer(() => {
                 <h3 style={{fontFamily: "Inter"}} className='m-auto'>{isLogin ? "Авторизация" : "Регистрация"}</h3>
                 <Form className='d-flex flex-column'>
                     <Form.Control
+                        name={'login'}
+                        onBlur={e => blurHandler(e)}
                         style={{height: 50, marginTop: 32}}
                         placeholder="Ваш логин..."
                         value={login}
-                        onChange={e => setLogin(e.target.value)}
+                        onChange={e => loginHandler(e)}
                     />
+                    {(loginDirty && loginError) && <div className='text-bg-danger bg-opacity-50 text-lg-start p-1 mt-1 rounded-1'>{loginError}</div>}
                     <Form.Control
+                        name={'password'}
+                        onBlur={e => blurHandler(e)}
                         style={{height: 50, marginTop: 12}}
                         placeholder="Ваш пароль..."
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={e => passwordHandler(e)}
                         type="password"
                     />
+                    {(passwordDirty && passwordError) && <div className='text-bg-danger bg-opacity-50 text-lg-start p-1 mt-1 rounded-1'>{passwordError}</div>}
+                    {error && <div className='text-bg-danger bg-opacity-50 text-lg-start p-1 mt-2 rounded-1'>{error}</div>}
                     <Button
+                        disabled={!formValid}
                         style={{height: 50, marginTop: 22}}
                         variant={"outline-primary"}
                         onClick={click}

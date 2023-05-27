@@ -60,10 +60,10 @@ const Navbar = observer(() => {
                     </div>
                 </div>
                 <div className={s.user_wrapper}>
-                    <img alt="Avatar" id="avatar" src = {generateAvatar(user.login[0].toUpperCase(), "#414956", ["#A1C8FF", "#D8E8FF"])} />
+                    <img alt="Avatar" id="avatar" src = {generateAvatar(user.user.login[0].toUpperCase(), "#414956", ["#A1C8FF", "#D8E8FF"])} />
                     <div className={s.user}>
                         {user.isAdmin ? <p>Администратор</p> : <p>Врач</p>}
-                        <p style={{fontSize: 18, fontWeight: 500}}>{user.login}</p>
+                        <p style={{fontSize: 18, fontWeight: 500}}>{user.user.login}</p>
                     </div>
                     <button className={s.logout_button} onClick={logOut}><LogOut className={s.logout_icon}/></button>
                 </div>

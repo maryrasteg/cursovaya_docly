@@ -8,9 +8,11 @@ import {CLIENT_ROUTE, CLIENTS_ROUTE, RECEPTION_ROUTE} from "../../utils/consts";
 import {Form, Button, Dropdown, FormGroup} from "react-bootstrap";
 import {getOneClient, updateClient} from "../../http/clientAPI";
 import {useParams} from 'react-router-dom'
+import {Context} from "../../index";
 
 
 const Client = observer(() => {
+    const {user} = useContext(Context)
     const navigate  = useNavigate()
     const [receptions, setReceptions] = useState([])
     const [editMode, setEditMode] = useState(false);
@@ -34,11 +36,12 @@ const Client = observer(() => {
             setPhone(data.data.client.phone)
         })
 
-    }, [])
+    }, [editMode])
 
     const update = async () => {
         if(surname != "" && first_name != ""){
             await updateClient(id, surname, first_name, middle_name, birth, phone)
+            toggleEditMode()
         }
         else alert("Недостаточно данных: фамилия или имя не могут быть пустыми")
     }
@@ -55,7 +58,9 @@ const Client = observer(() => {
         <div className={s.client_wrapper}>
             <div className={s.buttons_wrapper}>
                 <Button className="rounded-3" style={{height: 50, marginTop: 22, width: 240}} variant={"outline-secondary"} onClick={() => {navigate(CLIENTS_ROUTE)}}>Назад</Button>
-                <Button className="rounded-3 " style={{height: 50, marginTop: 22, paddingRight: 32, paddingLeft: 32}} variant={"outline-primary"} onClick={toggleEditMode} >{editMode ? "Отменить" : "Редактировать"}</Button>
+                {user.isAdmin && (<Button className="rounded-3 " style={{height: 50, marginTop: 22, paddingRight: 32, paddingLeft: 32}}
+                         variant={"outline-primary"}
+                         onClick={toggleEditMode}>{editMode ? "Отменить" : "Редактировать"}</Button>)}
             </div>
             {!editMode ? (
                 <Form className='d-flex flex-column' style={{width: "100%", borderRadius: 12}}>

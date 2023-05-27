@@ -6,13 +6,11 @@ export default class UserStore{
 
     _isWaiter: boolean;
     _user: any;
-    _login: string;
     constructor() {
         this._isAuth = false;
         this._user = {};
         this._isAdmin = false;
         this._isWaiter = false;
-        this._login = "rastegaeva_mi";
         makeAutoObservable(this)
     }
 
@@ -21,10 +19,6 @@ export default class UserStore{
     }
     setIsAdmin(bool: boolean){
         this._isAdmin = bool
-    }
-
-    setLogin(login: string){
-        this._login = login
     }
 
     setUser(user: any){
@@ -56,9 +50,6 @@ export default class UserStore{
     }
     get isAdmin(){
         return this._isAdmin
-    }
-    get login(){
-        return this._login
     }
 
     get isWaiter(){
