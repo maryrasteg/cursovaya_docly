@@ -12,10 +12,12 @@ const Client = sequelize.define('client',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     surname: {type: DataTypes.STRING, allowNull: false},
     first_name: {type: DataTypes.STRING, allowNull: false},
-    middle_name: {type: DataTypes.STRING, allowNull: false},
+    middle_name: {type: DataTypes.STRING, allowNull: true},
     genderId: {type: DataTypes.INTEGER, allowNull: true},
     phone: {type: DataTypes.STRING, allowNull: true},
     birth: {type: DataTypes.DATEONLY, allowNull: true},
+    createdAt: {type: DataTypes.DATE, allowNull: true},
+    updatedAt: {type: DataTypes.DATE, allowNull: true}
 })
 
 const Doctor = sequelize.define('doctor',{
@@ -25,7 +27,7 @@ const Doctor = sequelize.define('doctor',{
     middle_name: {type: DataTypes.STRING, allowNull: false},
     phone: {type: DataTypes.STRING, allowNull: false},
     birth: {type: DataTypes.DATEONLY, allowNull: true},
-    positionId: {type: DataTypes.INTEGER, allowNull: false},
+    positionId: {type: DataTypes.INTEGER, allowNull: true},
     rate: {type: DataTypes.INTEGER, allowNull: true},
 })
 
@@ -40,8 +42,9 @@ const Reception = sequelize.define('reception',{
 
 const Procedure = sequelize.define('procedure',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false},
     price: {type: DataTypes.INTEGER, allowNull: false},
+    duration: {type: DataTypes.INTEGER, allowNull: false}
 })
 
 const Position = sequelize.define('position',{
@@ -63,7 +66,7 @@ Reception.belongsTo(Client)
 Reception.belongsTo(Doctor)
 
 Reception.hasOne(Procedure)
-Procedure.belongsTo(Reception)
+Reception.belongsTo(Procedure)
 
 Client.hasOne(Gender)
 Gender.belongsTo(Client)

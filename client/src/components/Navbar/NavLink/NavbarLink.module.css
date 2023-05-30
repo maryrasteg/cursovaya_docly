@@ -1,7 +1,7 @@
 
 .active {
     font-weight: 500;
-    background: rgba(67, 88, 117, 0.08);
+    background: #EDF3FC;
     width: 100%;
     padding-left: 16px;
     padding-right: 0px;
@@ -19,15 +19,33 @@
     padding-bottom: 16px;
     text-decoration: none;
     border-radius: 8px;
+    transition: 200ms;
+    transition-timing-function: ease-in;
 }
 
 .linkWrapper:hover{
-    background: rgba(67, 88, 117, 0.08);
-    transition: 300ms;
+    background: #EDF3FC;
+    transition: 200ms;
+    transition-timing-function: ease-out;
+
 }
 
 .linkText {
     text-align: left;
     font-size: 14px;
     color: #435875;
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.active .linkText{
+    text-align: left;
+    font-size: 14px;
+    color: #007BFF;
+}
+
+.linkText svg{
+    width: 22px;
+    height: 22px;
 }

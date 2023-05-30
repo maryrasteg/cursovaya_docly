@@ -1,6 +1,7 @@
 const ApiError = require('../error/ApiError')
 const {Client, Reception, Doctor} = require('../models/models')
 const {forEach} = require("react-bootstrap/ElementChildren");
+const { Op } = require("sequelize")
 
 
 class ClientController {
@@ -14,7 +15,7 @@ class ClientController {
         }
     }
 
-    async edit(req, res) {
+    async edit(req, res, next) {
         try {
             const {id} = req.query;
             const {surname, first_name, middle_name, genderId, phone, birth} = req.body
@@ -25,12 +26,37 @@ class ClientController {
         }
     }
 
+    async delete(req, res, next) {
+        try {
+            const {id} = req.query;
+            Client.destroy({
+                where: {
+                    id: id
+                }
+            }).then(function(rowDeleted){
+                if(rowDeleted === 1){
+                    return res.json("Deleted successfully");
+                }
+            }, function(err){
+                next(ApiError.basRequest(err))
+            });
+        } catch (e) {
+            next(ApiError.basRequest(e.message))
+        }
+    }
+
     async getAll(req, res) {
-        let {page, limit} = req.query
+        let {page, limit, name} = req.query
         page = page || 1
         limit = limit || 20
+        name = name || ""
         let offset = page * limit - limit
-        const clients = await Client.findAndCountAll({limit, offset})
+        let clients
+        if(name.length <= 2){
+            clients = await Client.findAndCountAll({limit, offset})
+        } else {
+            clients = await Client.findAndCountAll({limit, offset, where: { 'surname': { [Op.like]: '%' + name.charAt(0).toUpperCase() + name.toLowerCase().slice(1) + '%' }}})
+        }
         return res.json(clients)
     }
 
