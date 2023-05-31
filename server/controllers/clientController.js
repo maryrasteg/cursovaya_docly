@@ -1,5 +1,5 @@
 const ApiError = require('../error/ApiError')
-const {Client, Reception, Doctor} = require('../models/models')
+const {Client, Reception, Doctor, Procedure} = require('../models/models')
 const {forEach} = require("react-bootstrap/ElementChildren");
 const { Op } = require("sequelize")
 
@@ -63,7 +63,7 @@ class ClientController {
     async getOne(req, res) {
         const {id} = req.params
         const client = await Client.findOne({where: {id}})
-        const receptions = await Reception.findAll({where: {clientId: id}, include: { model: Doctor, required: true },})
+        const receptions = await Reception.findAll({where: {clientId: id}, include:[ { model: Doctor, required: true }, { model: Procedure, required: true }],})
         const result = {"client": client, "receptions": receptions}
         return res.json(result)
     }

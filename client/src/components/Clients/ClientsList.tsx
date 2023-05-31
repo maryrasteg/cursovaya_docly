@@ -12,6 +12,7 @@ import {ReactComponent as SearchIcon} from "./assets/icon_search.svg";
 import {getAllClients} from "../../http/clientsAPI";
 import Pages from "../Pages/Pages";
 import {createClient} from "../../http/clientAPI";
+import { Notification } from '@arco-design/web-react';
 
 const ClientsList = observer(() => {
     const navigate  = useNavigate()
@@ -68,6 +69,10 @@ const ClientsList = observer(() => {
                 console.log(data)
             })
             handleClose()
+            return( Notification.success({
+                title: 'Сообщение',
+                content: 'Пользователь добавлен успешно!',
+            }))
         }
         else alert("Недостаточно данных: фамилия или имя не могут быть пустыми")
     }
@@ -77,7 +82,12 @@ const ClientsList = observer(() => {
         <div className={s.table_buttons_wrapper}>
             <div className={s.buttonsWrapper}>
                 <Button className='p-3 pe-5 ps-5 rounded-3' variant='outline-primary' onClick={handleShow}>Новый пациент</Button>
-                <Modal show={show} onHide={handleClose}>
+                <Modal
+                    show={show}
+                    onHide={handleClose}
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
                     <Modal.Header closeButton>
                         <Modal.Title>Добавление пациента</Modal.Title>
                     </Modal.Header>

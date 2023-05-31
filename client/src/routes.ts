@@ -22,7 +22,7 @@ export const authRoutes = [
         Component: Receptions
     },
     {
-        path: RECEPTION_ROUTE,
+        path: RECEPTION_ROUTE + '/:id',
         Component: Reception
     },
 ]

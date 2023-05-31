@@ -11,6 +11,7 @@ import {useParams} from 'react-router-dom'
 import {Context} from "../../index";
 import client from "../../pages/Client";
 import clients from "../../pages/Clients";
+import {Notification} from "@arco-design/web-react";
 
 
 const Client = observer(() => {
@@ -41,10 +42,11 @@ const Client = observer(() => {
             setMiddle_name(data.data.client.middle_name)
             setBirth(data.data.client.birth)
             setPhone(data.data.client.phone)
+
         })
 
     }, [editMode])
-
+    console.log(receptions)
     const update = async () => {
         if(surname != "" && first_name != ""){
             await updateClient(id, surname, first_name, middle_name, birth, phone)
@@ -65,6 +67,10 @@ const Client = observer(() => {
         try{
             await deleteClient(id)
             navigate(CLIENTS_ROUTE)
+            return( Notification.success({
+                title: 'Сообщение',
+                content: 'Пользователь удален успешно!',
+            }))
         } catch(e) {
             alert(e)
         }
@@ -164,7 +170,7 @@ const Client = observer(() => {
                             {receptions.map((reception: any) =>
                                 <tr className={s.trb} onClick={() => navigate(RECEPTION_ROUTE + '/' + reception.id)}>
                                     <td style={{width: "25%"}} className={s.tdb}>{reception.doctor.surname + ' ' + reception.doctor.first_name[0] + '.' + reception.doctor.middle_name[0] + '.'}</td>
-                                    <td style={{width: "25%"}} className={s.tdb}>{reception.procedureId}</td>
+                                    <td style={{width: "25%"}} className={s.tdb}>{reception.procedure.name}</td>
                                     <td style={{width: "25%"}} className={s.tdb}>{reception.date && (reception.date).split("-").reverse().join(".")}</td>
                                     <td style={{width: "25%"}} className={s.tdb}>{reception.time}</td>
                                 </tr>

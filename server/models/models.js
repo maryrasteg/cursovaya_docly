@@ -37,6 +37,7 @@ const Reception = sequelize.define('reception',{
     clientId: {type: DataTypes.INTEGER, allowNull: false},
     date: {type: DataTypes.DATEONLY, allowNull: false},
     time: {type: DataTypes.TIME, allowNull: false},
+    note: {type: DataTypes.TEXT, allowNull: true},
     procedureId: {type: DataTypes.INTEGER, allowNull: false},
 })
 
