@@ -4,13 +4,14 @@ import NavbarLink from "./NavLink/NavbarLink";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import {ReactComponent as Logo} from "./assets/logo.svg"
- import {ReactComponent as LogOut} from "./assets/logout.svg"
- import {Button} from "react-bootstrap";
+import {ReactComponent as LogOut} from "./assets/logout.svg"
+
 import {ReactComponent as PatientIcon} from "./assets/patients.svg"
- import {ReactComponent as ReceptionsIcon} from "./assets/receptions.svg"
- import {ReactComponent as DoctorsIcon} from "./assets/doctors.svg"
- import {ReactComponent as UsersIcon} from "./assets/users.svg"
- import {ReactComponent as DocumentsIcon} from "./assets/documents.svg"
+import {ReactComponent as ReceptionsIcon} from "./assets/receptions.svg"
+import {ReactComponent as DoctorsIcon} from "./assets/doctors.svg"
+import {ReactComponent as UsersIcon} from "./assets/users.svg"
+import {ReactComponent as DocumentsIcon} from "./assets/documents.svg"
+import {ReactComponent as ProceduresIcon} from "./assets/procedures.svg"
 
  function generateAvatar(
      text: string,
@@ -62,6 +63,7 @@ const Navbar = observer(() => {
                         <NavbarLink link='/receptions' name='Приемы' icon={<ReceptionsIcon />} />
                         {user.isAdmin && (<NavbarLink link='/doctors' name='Врачи' icon={<DoctorsIcon />} />) }
                         {user.isAdmin && (<NavbarLink link='/admin' name='Пользователи' icon={<UsersIcon />} />) }
+                        {user.isAdmin && (<NavbarLink link='/procedures' name='Процедуры' icon={<ProceduresIcon />} />) }
                         {user.isAdmin && (<NavbarLink link='/reports' name='Отчеты' icon={<DocumentsIcon />} />) }
                     </div>
                 </div>

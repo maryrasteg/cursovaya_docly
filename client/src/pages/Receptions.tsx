@@ -1,12 +1,19 @@
 import React from 'react';
-import ReceptionsList from "../components/Receptions/Receptions";
+import ReceptionsList from "../components/Receptions/ReceptionsList";
 import s from "./Page.module.css";
+import {motion} from "framer-motion";
 
 const Receptions = () => {
     return (
-        <div className={s.page_wrapper}>
+        <motion.div
+            initial={{ opacity: 0.3 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0.3 }}
+            transition={{ duration: 0.4}}
+            className={s.page_wrapper}
+        >
             <ReceptionsList />
-        </div>
+        </motion.div>
     )
 }
 

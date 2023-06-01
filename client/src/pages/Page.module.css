@@ -6,3 +6,11 @@
     justify-content: center;
     padding: 40px;
 }
+
+.report_card_wrapper{
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    grid-auto-rows: 200px;
+    grid-column-gap: 22px;
+    grid-row-gap: 22px;
+}

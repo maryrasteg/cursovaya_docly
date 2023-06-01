@@ -1,5 +1,4 @@
 import {$authHost, $host} from "./index";
-import jwtDecode from "jwt-decode";
 
 export const getOneClient = async (id: any) =>{
     const {data} = await $authHost.get('api/clients/'+id)

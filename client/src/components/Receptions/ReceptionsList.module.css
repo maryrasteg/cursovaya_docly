@@ -50,9 +50,12 @@ table{
 }
 
 .buttonsWrapper{
+    width: 100%;
+    justify-content: space-between;
     display: flex;
     flex-direction: row;
     gap: 22px;
+    align-items: center;
 }
 
 .searchResultsList{
@@ -116,4 +119,21 @@ table{
 
 .divider:last-child{
     display: none;
+}
+
+.input_and_button{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(67, 88, 117, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(67, 88, 117, 0.22);
+}
+
+.buttonsGroup{
+    display: flex;
+    flex-direction: row;
+    gap: 22px;
+    align-items: center;
 }

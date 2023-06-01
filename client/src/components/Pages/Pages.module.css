@@ -5,6 +5,7 @@
     align-items: center;
     border-top: 2px solid rgba(67, 88, 117, 0.08);
     padding-left: 22px;
+    margin: 0;
     gap: 4px
 }
 

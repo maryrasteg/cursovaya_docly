@@ -69,7 +69,7 @@ const Client = observer(() => {
             navigate(CLIENTS_ROUTE)
             return( Notification.success({
                 title: 'Сообщение',
-                content: 'Пользователь удален успешно!',
+                content: 'Пациент удален успешно!',
             }))
         } catch(e) {
             alert(e)

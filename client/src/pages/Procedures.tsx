@@ -1,9 +1,9 @@
 import React from 'react';
 import s from "./Page.module.css";
-import Client from "../components/Client/Client";
 import {motion} from "framer-motion";
+import ProceduresList from "../components/Procedures/ProceduresList";
 
-const ClientPage = () => {
+const Reception = () => {
     return (
         <motion.div
             initial={{ opacity: 0.3 }}
@@ -12,9 +12,9 @@ const ClientPage = () => {
             transition={{ duration: 0.4}}
             className={s.page_wrapper}
         >
-            <Client />
+            <ProceduresList />
         </motion.div>
     )
 }
 
-export default ClientPage;
+export default Reception;
