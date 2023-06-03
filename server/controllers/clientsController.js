@@ -14,7 +14,7 @@ class ClientsController {
             next(ApiError.basRequest(e.message))
         }
     }
-
+  
     async edit(req, res, next) {
         try {
             const {id} = req.query;

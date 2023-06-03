@@ -83,7 +83,7 @@ const ProceduresList = observer(() => {
                    centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>{isAdd ? "Добавление процедуры" : "Редактирование пользователя"}</Modal.Title>
+                    <Modal.Title>{isAdd ? "Добавление процедуры" : "Редактирование процедуры"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Label style={{textAlign:"left"}}>Название</Form.Label>

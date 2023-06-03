@@ -16,6 +16,8 @@ import {getAllClients} from "../../http/clientsAPI";
 import {createReception} from "../../http/receptionAPI";
 
 const ReceptionsList = observer(() => {
+    const {user} = useContext(Context)
+
     const navigate  = useNavigate()
     const {receptions} = useContext(Context)
     const [doctors, setDoctors] = useState([])
@@ -127,7 +129,7 @@ const ReceptionsList = observer(() => {
     return(
         <div className={s.table_buttons_wrapper}>
             <div className={s.buttonsWrapper}>
-                <Button variant="outline-primary" style={{height: 46}} onClick={handleShow}>Новый приём</Button>
+                {user.isAdmin && <Button variant="outline-primary" style={{height: 46}} onClick={handleShow}>Новый приём</Button>}
                 <Modal
                     show={show}
                     onHide={handleClose}

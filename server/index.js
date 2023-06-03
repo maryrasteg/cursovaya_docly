@@ -12,16 +12,16 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
-
+ 
 //should be last
 app.use(errorHandler)
 
-const start = async () => {
+const start = async () => { 
     try{
         await sequelize.authenticate()
         await sequelize.sync()
         app.listen(PORT, () => console.log(`Server started on ${PORT}`))
-    } catch(e) {
+    } catch(e) { 
         console.log(e)
     }
 }

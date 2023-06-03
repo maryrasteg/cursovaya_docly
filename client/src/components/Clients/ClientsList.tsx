@@ -21,6 +21,8 @@ const ClientsList = observer(() => {
 
     //modal fields
 
+    const {user} = useContext(Context)
+
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setSurname("")
@@ -28,6 +30,7 @@ const ClientsList = observer(() => {
         setMiddle_name("")
         setBirth("")
         setPhone("")
+        setGender(0)
         setShow(false)
     };
     const handleShow = () => setShow(true);
@@ -37,6 +40,7 @@ const ClientsList = observer(() => {
     const [surname, setSurname] = useState("")
     const [first_name, setFirst_name] = useState("")
     const [middle_name, setMiddle_name] = useState("")
+    const [gender, setGender] = useState(0)
     const [birth, setBirth] = useState("")
     const [phone, setPhone] = useState("")
 
@@ -65,7 +69,7 @@ const ClientsList = observer(() => {
 
     const addClient = () => {
         if(surname != "" && first_name != ""){
-            createClient(surname, first_name, middle_name, birth, phone).then((data: any) => {
+            createClient(surname, first_name, middle_name, gender, birth, phone).then((data: any) => {
                 console.log(data)
             })
             handleClose()
@@ -81,7 +85,7 @@ const ClientsList = observer(() => {
     return(
         <div className={s.table_buttons_wrapper}>
             <div className={s.buttonsWrapper}>
-                <Button className='p-3 pe-5 ps-5 rounded-3' variant='outline-primary' onClick={handleShow}>Новый пациент</Button>
+                {user.isAdmin && <Button className='p-3 pe-5 ps-5 rounded-3' variant='outline-primary' onClick={handleShow}>Новый пациент</Button>}
                 <Modal
                     show={show}
                     onHide={handleClose}
@@ -99,6 +103,18 @@ const ClientsList = observer(() => {
                             <Form.Control className="rounded-3" placeholder={'Имя'} defaultValue={first_name} onChange={e => setFirst_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
                             <Form.Label style={{textAlign:"left",  marginTop: 12}}>Отчество</Form.Label>
                             <Form.Control className="rounded-3" placeholder={'Отчетство'} defaultValue={middle_name} onChange={e => setMiddle_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                            <Form.Label style={{textAlign:"left",  marginTop: 12}}>Пол</Form.Label>
+                            <Dropdown>
+                        <Dropdown.Toggle
+                            className='d-flex w-100 justify-content-between align-items-center'
+                            style={{height: 42, background: "#EDF3FC", color: "#435875", border: "1px solid #D1D6E1"}}>{gender == 2 ? "Мужской" : gender == 1 ? "Женский" : "Выберите пол"}</Dropdown.Toggle>
+                                    <Dropdown.Menu className='w-100'>
+                                        <Dropdown.Item onClick={() => setGender(2)}>Мужской</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => setGender(1)}>Женский</Dropdown.Item>
+                                    </Dropdown.Menu>
+                            </Dropdown>
+
+
                             <FormGroup className='d-flex flex-row rounded-3 gap-3'>
                                 <FormGroup className='d-flex flex-column w-100'>
                                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>

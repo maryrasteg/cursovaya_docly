@@ -91,14 +91,14 @@ const Client = observer(() => {
                 <div className={s.buttons_wrapper}>
                     <Button className="rounded-3" style={{height: 50, marginTop: 22, width: 240}} variant={"outline-secondary"} onClick={backHandler}>Назад</Button>
                     <div className={s.buttons_together}>
-                        {user.isAdmin && editMode && (<Button className="rounded-3 " style={{height: 50, paddingRight: 32, paddingLeft: 32, width: 200}}
+                        {editMode && user.isAdmin && (<Button className="rounded-3 " style={{height: 50, paddingRight: 32, paddingLeft: 32, width: 200}}
                                                               variant={"outline-danger"}
                                                               onClick={handleShow}> Отменить прием</Button>)}
-                        {user.isAdmin && (<Button className="rounded-3 " style={{height: 50,  marginTop: 22, paddingRight: 64, paddingLeft: 64, width: 340}}
+                        <Button className="rounded-3 " style={{height: 50,  marginTop: 22, paddingRight: 64, paddingLeft: 64, width: 340}}
                                  variant={"outline-primary"}
-                                 onClick={toggleEditMode}>{editMode ? "Отменить" : "Редактировать"}</Button>)}
+                                 onClick={toggleEditMode}>{editMode ? "Отменить" : "Редактировать"}</Button>
                     </div>
-                </div>
+                </div> 
                         <Form className='d-flex flex-column rounded-3 mt-3 mb-3' style={{width: "100%"}} >
                             <Form.Label style={{textAlign:"left"}}>Дата приема</Form.Label>
                             <Form.Control value={date.split("-").reverse().join(".")} style={{height: 50, background: "#EDF3FC"}}  />
