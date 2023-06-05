@@ -10,8 +10,8 @@ export const updateDoctor = async (id: number, surname: string, first_name: stri
     const {data} = await $authHost.put('api/doctors/edit?id=' + id, {surname, first_name, middle_name, birth, phone})
     return {data}
 }
-export const createDoctor = async (surname: string, first_name: string, middle_name: string, birth: string, phone: string) => {
-    const {data} = await $authHost.post('api/doctors/add', {surname, first_name, middle_name, birth, phone})
+export const createDoctor = async (surname: string, first_name: string, middle_name: string, positionId: number, birth: string, phone: string) => {
+    const {data} = await $authHost.post('api/doctors/add', {surname, first_name, middle_name, positionId, birth, phone})
     return {data}
 }
 export const deleteDoctor = async (id: number) =>{

@@ -20,10 +20,36 @@ const DoctorsList = observer(() => {
     const [surname, setSurname] = useState("")
     const [first_name, setFirst_name] = useState("")
     const [middle_name, setMiddle_name] = useState("")
+    const [positionId, setPositionId] = useState(0)
+    const [positionName, setPositionName] = useState("")
     const [birth, setBirth] = useState("")
     const [phone, setPhone] = useState("")
     const [isAdd, setIsAdd] = useState(false)
     const [isDoctorEdited, setIsDoctorEdited] = useState(false)
+
+    const positionNameHandler = (id: number) => {
+        switch (id){
+            case 0:
+                setPositionName("")
+                break;
+            case 1:
+                setPositionId(id)
+                setPositionName("Мануальный терапевт")
+                break;
+            case 2:
+                setPositionId(id)
+                setPositionName("Остеопат")
+                break;
+            case 3:
+                setPositionId(id)
+                setPositionName("Хирург")
+                break;
+            case 4:
+                setPositionId(id)
+                setPositionName("Педиатр")
+                break;
+        }
+    }
 
     useEffect(() => {
         listDoctors(doctors.page, 20).then((data: any) => {
@@ -40,7 +66,7 @@ const DoctorsList = observer(() => {
         }, 300)
     }
 
-    const handleShow = (doctor = {id: 0, surname: "", first_name: "", middle_name: "", birth: "", phone: ""}) => {
+    const handleShow = (doctor = {id: 0, surname: "", first_name: "", middle_name: "", birth: "", phone: "", positionId: 0}) => {
         if(doctor.id == 0){
             console.log(doctor.id)
             setIsAdd(true)
@@ -51,6 +77,8 @@ const DoctorsList = observer(() => {
         setMiddle_name(doctor.middle_name)
         setBirth(doctor.birth)
         setPhone(doctor.phone)
+        setPositionId(doctor.positionId)
+        positionNameHandler(doctor.positionId)
         setShow(true)
     };
 
@@ -87,7 +115,7 @@ const DoctorsList = observer(() => {
 
     const doctorCreateHandler = async () => {
         try{
-            await createDoctor(surname, first_name, middle_name, birth, phone).then(() => {
+            await createDoctor(surname, first_name, middle_name, positionId, birth, phone).then(() => {
                 setIsDoctorEdited(true)
                 handleClose()
                 setIsAdd(false)
@@ -136,6 +164,24 @@ const DoctorsList = observer(() => {
                     <Form.Control className="rounded-3" placeholder='Имя' value={first_name} onChange={event => setFirst_name(event.target.value)} style={{height: 42, background: "#EDF3FC"}}  />
                     <Form.Label style={{textAlign:"left"}}>Отчество</Form.Label>
                     <Form.Control className="rounded-3" placeholder='Отчество' value={middle_name} onChange={event => setMiddle_name(event.target.value)} style={{height: 42, background: "#EDF3FC"}}  />
+                    <Form.Label style={{textAlign:"left"}}>Специальность</Form.Label>
+                    <Dropdown>
+                                <Dropdown.Toggle className='d-flex w-100 justify-content-between align-items-center' style={{height: 42, background: "#EDF3FC", color: "#435875", border: "1px solid #D1D6E1"}}>{positionName || "Выберите специальность"}</Dropdown.Toggle>
+                                <Dropdown.Menu className='w-100'>
+                                        <Dropdown.Item key={1} onClick={() => positionNameHandler(1)}>
+                                            Мануальный терапевт
+                                        </Dropdown.Item>
+                                        <Dropdown.Item key={1} onClick={() => positionNameHandler(2)}>
+                                            Остеопат
+                                        </Dropdown.Item>
+                                        <Dropdown.Item key={1} onClick={() => positionNameHandler(3)}>
+                                            Хирург
+                                        </Dropdown.Item>
+                                        <Dropdown.Item key={1} onClick={() => positionNameHandler(4)}>
+                                            Педиатр
+                                        </Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                     <Form.Label style={{textAlign:"left"}}>Дата рождения</Form.Label>
                     <Form.Control className="rounded-3" placeholder='Дата рождения' value={birth} onChange={event => setBirth(event.target.value)} style={{height: 42, background: "#EDF3FC"}} type={"date"} />
                     <Form.Label style={{textAlign:"left"}}>Номер телефона</Form.Label>

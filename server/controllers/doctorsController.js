@@ -3,8 +3,8 @@ const {Doctor, Client, User, Reception} = require('../models/models')
 const {Op} = require("sequelize");
 class DoctorsController {
     async add(req, res, next) {
-        const {surname, first_name, middle_name, phone, birth} = req.body
-        const doctor = await Doctor.create({surname: surname, first_name: first_name, middle_name: middle_name, phone: phone, birth: birth})
+        const {surname, first_name, middle_name, positionId, phone, birth} = req.body
+        const doctor = await Doctor.create({surname: surname, first_name: first_name, middle_name: middle_name, positionId: positionId, phone: phone, birth: birth})
         return res.json({doctor})
     }
 
@@ -15,8 +15,8 @@ class DoctorsController {
             await Doctor.update({surname: surname, first_name: first_name, middle_name: middle_name, birth: birth, phone: phone}, {where: {id: id}})
             return res.json("Врач изменен успешно!")
         } catch (e) {
-            next(ApiError.basRequest(e.message))
-        }
+            next(ApiError.basRequest(e.message))   
+        } 
     }
 
     async getAll(req, res, next) {
