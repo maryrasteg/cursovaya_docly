@@ -114,18 +114,28 @@ const DoctorsList = observer(() => {
     }
 
     const doctorCreateHandler = async () => {
-        try{
-            await createDoctor(surname, first_name, middle_name, positionId, birth, phone).then(() => {
-                setIsDoctorEdited(true)
-                handleClose()
-                setIsAdd(false)
-                return( Notification.success({
-                    title: 'Сообщение',
-                    content: 'Врач успешно добавлен!',
+        if(surname && first_name && middle_name && birth){
+            try{
+                    await createDoctor(surname, first_name, middle_name, positionId, birth, phone).then(() => {
+                        setIsDoctorEdited(true)
+                        handleClose()
+                        setIsAdd(false)
+                        return( Notification.success({
+                            title: 'Сообщение',
+                            content: 'Врач успешно добавлен!',
+                        }))
+                    })
+            } catch(e: any) {
+                return( Notification.error({
+                    title: 'Ошибка',
+                    content: e.message,
                 }))
-            })
-        } catch(e) {
-            alert(e)
+            }
+        } else {
+            return( Notification.error({
+                title: 'Ошибка',
+                content: 'Заполните все обязательные поля!',
+            }))
         }
     }
 

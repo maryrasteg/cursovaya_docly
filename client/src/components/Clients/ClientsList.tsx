@@ -13,36 +13,52 @@ import {getAllClients} from "../../http/clientsAPI";
 import Pages from "../Pages/Pages";
 import {createClient} from "../../http/clientAPI";
 import { Notification } from '@arco-design/web-react';
+import {useForm} from "react-hook-form";
 
 const ClientsList = observer(() => {
     const navigate  = useNavigate()
     const {clients} = useContext(Context)
     const [searchName, setSearchName] = useState("")
 
-    //modal fields
+    const {
+        register,
+        formState: {
+            errors,
+            isValid,
+        },
+        reset,
+        handleSubmit,
+    } = useForm({
+        mode: "onBlur"
+    });
 
     const {user} = useContext(Context)
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
-        setSurname("")
-        setFirst_name("")
-        setMiddle_name("")
-        setBirth("")
-        setPhone("")
         setGender(0)
         setShow(false)
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        reset()
+        setShow(true)
+    };
 
+
+    const onSubmit = (data: any) => {
+        createClient(data.surname, data.firstName, data.middleName, gender, data.birth, data.phone).then((data: any) => {
+            console.log(data)
+        })
+        reset()
+        handleClose()
+        return( Notification.success({
+            title: 'Сообщение',
+            content: 'Пользователь добавлен успешно!',
+        }))
+    }
     //new user fields
 
-    const [surname, setSurname] = useState("")
-    const [first_name, setFirst_name] = useState("")
-    const [middle_name, setMiddle_name] = useState("")
     const [gender, setGender] = useState(0)
-    const [birth, setBirth] = useState("")
-    const [phone, setPhone] = useState("")
 
     //for page uploading
 
@@ -67,19 +83,6 @@ const ClientsList = observer(() => {
         return () => clearTimeout(delayDebounceFn)
     }, [searchName])
 
-    const addClient = () => {
-        if(surname != "" && first_name != ""){
-            createClient(surname, first_name, middle_name, gender, birth, phone).then((data: any) => {
-                console.log(data)
-            })
-            handleClose()
-            return( Notification.success({
-                title: 'Сообщение',
-                content: 'Пользователь добавлен успешно!',
-            }))
-        }
-        else alert("Недостаточно данных: фамилия или имя не могут быть пустыми")
-    }
 
 
     return(
@@ -98,14 +101,16 @@ const ClientsList = observer(() => {
                     <Modal.Body>
                         <Form className='d-flex flex-column rounded-3 mt-3 mb-3' style={{width: "100%"}} >
                             <Form.Label style={{textAlign:"left"}}>Фамилия</Form.Label>
-                            <Form.Control className="rounded-3" placeholder={'Фамилия'} value={surname} onChange={e => setSurname(e.target.value)} style={{height: 50, background: "#EDF3FC"}} />
+                            <Form.Control {...register('surname', {required: true})} className="rounded-3" placeholder={'Фамилия'} style={{height: 50, background: "#EDF3FC"}} />
+                            {errors?.surname && <div className='text-bg-danger bg-opacity-50 text-lg-start p-1 mt-1 rounded-1'>Поле обязательно к заполнению</div>}
                             <Form.Label style={{textAlign:"left",  marginTop: 12}}>Имя</Form.Label>
-                            <Form.Control className="rounded-3" placeholder={'Имя'} defaultValue={first_name} onChange={e => setFirst_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                            <Form.Control {...register('firstName', {required: true})} className="rounded-3" placeholder={'Имя'} style={{height: 50, background: "#EDF3FC"}}  />
+                            {errors?.firstName && <div className='text-bg-danger bg-opacity-50 text-lg-start p-1 mt-1 rounded-1'>Поле обязательно к заполнению</div>}
                             <Form.Label style={{textAlign:"left",  marginTop: 12}}>Отчество</Form.Label>
-                            <Form.Control className="rounded-3" placeholder={'Отчетство'} defaultValue={middle_name} onChange={e => setMiddle_name(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                            <Form.Control {...register('middleName', {required: false})} className="rounded-3" placeholder={'Отчетство'} style={{height: 50, background: "#EDF3FC"}}  />
                             <Form.Label style={{textAlign:"left",  marginTop: 12}}>Пол</Form.Label>
                             <Dropdown>
-                        <Dropdown.Toggle
+                            <Dropdown.Toggle
                             className='d-flex w-100 justify-content-between align-items-center'
                             style={{height: 42, background: "#EDF3FC", color: "#435875", border: "1px solid #D1D6E1"}}>{gender == 2 ? "Мужской" : gender == 1 ? "Женский" : "Выберите пол"}</Dropdown.Toggle>
                                     <Dropdown.Menu className='w-100'>
@@ -113,22 +118,20 @@ const ClientsList = observer(() => {
                                         <Dropdown.Item onClick={() => setGender(1)}>Женский</Dropdown.Item>
                                     </Dropdown.Menu>
                             </Dropdown>
-
-
                             <FormGroup className='d-flex flex-row rounded-3 gap-3'>
                                 <FormGroup className='d-flex flex-column w-100'>
                                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Дата рождения</Form.Label>
-                                    <Form.Control className="rounded-3" placeholder={birth} defaultValue={birth} onChange={e => setBirth(e.target.value)} style={{height: 50, background: "#EDF3FC"}} type={'date'}  />
+                                    <Form.Control {...register('birth', {required: true})} className="rounded-3" style={{height: 50, background: "#EDF3FC"}} type={'date'}  />
                                 </FormGroup>
                                 <FormGroup className='d-flex flex-column w-100'>
                                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Номер телефона</Form.Label>
-                                    <Form.Control className="rounded-3" placeholder={'Номер телефона'} defaultValue={phone} onChange={e => setPhone(e.target.value)} style={{height: 50, background: "#EDF3FC"}}  />
+                                    <Form.Control {...register('phone', {required: false})} className="rounded-3" placeholder={'Номер телефона'} style={{height: 50, background: "#EDF3FC"}}  />
                                 </FormGroup>
                             </FormGroup>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer className='d-flex flex-row'>
-                        <Button variant="primary" className='ps-4 pe-4 pb-3 pt-3 w-100' onClick={addClient}>
+                        <Button variant="primary" className='ps-4 pe-4 pb-3 pt-3 w-100' disabled={!isValid} onClick={handleSubmit(onSubmit)}>
                             Создать
                         </Button>
                     </Modal.Footer>

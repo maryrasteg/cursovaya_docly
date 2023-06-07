@@ -31,6 +31,25 @@ class ProceduresController {
             next(ApiError.basRequest(e.message))
         }
     }
+
+    async delete(req, res, next) {
+        try {
+            const {id} = req.query;
+            Procedure.destroy({
+                where: {
+                    id: id
+                }
+            }).then(function(rowDeleted){
+                if(rowDeleted === 1){
+                    return res.json("Процедура успешно удалена!");
+                }
+            }, function(err){
+                next(ApiError.basRequest(err))
+            });
+        } catch (e) {
+            next(ApiError.basRequest(e.message))
+        }
+    }
 }
 
 module.exports = new ProceduresController()

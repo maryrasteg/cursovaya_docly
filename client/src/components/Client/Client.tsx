@@ -12,13 +12,17 @@ import {Context} from "../../index";
 import client from "../../pages/Client";
 import clients from "../../pages/Clients";
 import {Notification} from "@arco-design/web-react";
+import {getAllClients} from "../../http/clientsAPI";
 
 
 const Client = observer(() => {
     const {user} = useContext(Context)
     const navigate  = useNavigate()
+
     const [receptions, setReceptions] = useState([])
     const [editMode, setEditMode] = useState(false);
+
+
 
     const {id} = useParams()
 
@@ -46,6 +50,9 @@ const Client = observer(() => {
         })
 
     }, [editMode])
+
+
+
     console.log(receptions)
     const update = async () => {
         if(surname != "" && first_name != ""){

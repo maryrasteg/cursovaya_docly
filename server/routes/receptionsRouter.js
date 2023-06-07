@@ -9,5 +9,6 @@ router.get('/month', checkRole('ADMINISTRATOR'), receptionsController.getMonth)
 router.get('client/:clientid', receptionsController.getForClient)
 router.get('/:id', receptionsController.getOne)
 router.delete('/delete', checkRole('ADMINISTRATOR'), receptionsController.delete)
+router.put('/update', checkRole('USER', 'ADMINISTRATOR'), receptionsController.update)
 
-module.exports = router
+module.exports = router 

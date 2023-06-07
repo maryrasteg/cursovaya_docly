@@ -18,3 +18,8 @@ export const createProcedure = async (name: string, price: number, duration: num
     const {data} = await $authHost.post('api/procedures/add',{name, price, duration})
     return "Procedure successfully added!"
 }
+
+export const deleteProcedure = async (id: number) => {
+    const {data} = await $authHost.delete('api/procedures/delete?id=' + id)
+    return {data}
+}

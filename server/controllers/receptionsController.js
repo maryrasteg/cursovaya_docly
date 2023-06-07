@@ -1,5 +1,5 @@
 const ApiError = require('../error/ApiError')
-const {Reception, Doctor, Client, Procedure} = require('../models/models')
+const {Reception, Doctor, Client, Procedure, User} = require('../models/models')
 const {Note} = require('../models/models')
 const {Op} = require("sequelize");
 class ReceptionsController {
@@ -78,6 +78,17 @@ class ReceptionsController {
                 {model: Procedure, where: {id: {[Op.col]: 'procedureId'}}}
             ]})
         return res.json(reception)
+    }
+
+    async update(req, res, next) {
+        try {
+            const {id} = req.query;
+            const {date, time, clientId, doctorId, procedureId, note} = req.body
+            await Reception.update({date, time, clientId, doctorId, procedureId, note}, {where: {id: id}})
+            return res.json("Прием успешно обновлен!")
+        } catch (e) {
+            next(ApiError.basRequest(e.message))
+        }
     }
 
     async getMonth(req, res, next) {

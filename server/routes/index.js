@@ -12,6 +12,6 @@ router.use('/clients', checkRole('USER', 'ADMINISTRATOR'), clientsRouter)
 router.use('/user', usersRouter)
 router.use('/doctors', checkRole('USER', 'ADMINISTRATOR'), doctorsRouter)
 router.use('/receptions', checkRole('USER', 'ADMINISTRATOR'), receptionsRouter)
-router.use('/procedures', checkRole('ADMINISTRATOR'), proceduresRouter)
+router.use('/procedures', checkRole('USER', 'ADMINISTRATOR'), proceduresRouter)
 
 module.exports = router

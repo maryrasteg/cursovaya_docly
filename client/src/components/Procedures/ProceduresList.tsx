@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import Pages from "../Pages/Pages";
 import {Button, Dropdown, Form, Modal} from "react-bootstrap";
 import {Notification} from "@arco-design/web-react";
-import {listProcedures, updateProcedure, createProcedure} from "../../http/proceduresAPI";
+import {listProcedures, updateProcedure, createProcedure, deleteProcedure} from "../../http/proceduresAPI";
 
 const ProceduresList = observer(() => {
     const navigate = useNavigate()
@@ -16,6 +16,8 @@ const ProceduresList = observer(() => {
 
     //modal fields
     const [show, setShow] = useState(false);
+
+    const [showDelete, setShowDelete] = useState(false);
 
     const [isAdd, setIsAdd] = useState(false)
     const [isEdited, setIsEdited] = useState(false)
@@ -63,20 +65,54 @@ const ProceduresList = observer(() => {
         })
     }
 
-    const createProcedureHandler = async () => {
-        await createProcedure(name, Number(price), Number(duration)).then(() => {
+    const deleteProcedureHandler = async () => {
+        await deleteProcedure(procedureId).then((data) => {
             setIsEdited(true)
+            setShowDelete(false)
             handleClose()
             return( Notification.success({
                 title: 'Сообщение',
-                content: 'Процедура успешно добавлена!',
+                content: data.data,
 
             }))
         })
     }
 
+    const createProcedureHandler = async () => {
+        const reg = /^\d+$/;
+        if (name && reg.test(price) && reg.test(duration)) {
+            await createProcedure(name, Number(price), Number(duration)).then(() => {
+                setIsEdited(true)
+                handleClose()
+                return( Notification.success({
+                    title: 'Сообщение',
+                    content: 'Процедура успешно добавлена!',
+                }))
+            })
+        } else {
+            return( Notification.error({
+                title: 'Ошибка',
+                content: 'Заполните все поля!',
+            }))
+        }
+    }
+
     return (
         <>
+            <Modal show={showDelete} onHide={() => setShowDelete(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Подтверждение удаления</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Вы дейсивтельно хотите удалить процедуру {name}?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => setShowDelete(false)}>
+                        Отменить
+                    </Button>
+                    <Button variant="danger" onClick={deleteProcedureHandler}>
+                        Удалить
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Modal show={show}
                    onHide={handleClose}
                    aria-labelledby="contained-modal-title-vcenter"
@@ -86,6 +122,9 @@ const ProceduresList = observer(() => {
                     <Modal.Title>{isAdd ? "Добавление процедуры" : "Редактирование процедуры"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {!isAdd && (<div className='w-100 d-flex flex-row justify-content-end'>
+                        <Button variant={'outline-danger'} onClick={() => setShowDelete(true)}>Удалить процедуру</Button>
+                    </div>)}
                     <Form.Label style={{textAlign:"left"}}>Название</Form.Label>
                     <Form.Control className="rounded-3" placeholder='Название' value={name} onChange={e => setName(e.target.value)} style={{height: 42, background: "#EDF3FC"}}  />
                     <Form.Label style={{textAlign:"left",  marginTop: 12}}>Стоимость</Form.Label>

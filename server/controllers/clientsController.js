@@ -8,7 +8,16 @@ class ClientsController {
     async add(req, res, next) {
         try {
             const {surname, first_name, middle_name, genderId, phone, birth} = req.body
-            const client = await Client.create({surname, first_name, middle_name, genderId, phone, birth})
+            let client
+            if (birth && genderId>0) {
+                client = await Client.create({surname, first_name, middle_name, genderId, phone, birth})
+            } else if (birth && genderId==0) {
+                client = await Client.create({surname, first_name, middle_name, phone, birth})
+            } else if (!birth && genderId==0) {
+                client = await Client.create({surname, first_name, middle_name, phone})
+            } else if (!birth && genderId>0) {
+                client = await Client.create({surname, first_name, middle_name, genderId, phone})
+            }
             return res.json(client)
         } catch (e) {
             next(ApiError.basRequest(e.message))

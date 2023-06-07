@@ -74,3 +74,72 @@ table{
     gap: 12px;
     align-items: end;
 }
+
+.client_field_wrapper{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.searchResultsList{
+    opacity: 100;
+    display: flex;
+    position: absolute;
+    top: 90px;
+    left: 0px;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid rgba(67, 88, 117, 0.12);
+    border-radius: 8px;
+    padding: 4px;
+    background: #FFFFFF;
+    z-index: 999;
+    width: 100%;
+    box-shadow: 0px 74px 44px rgba(0, 0, 0, 0.02), 0px 33px 33px rgba(0, 0, 0, 0.03), 0px 8px 18px rgba(0, 0, 0, 0.03), 0px 0px 0px rgba(0, 0, 0, 0.03);
+    transition: 400ms;
+}
+
+.searchResultsList a{
+    text-decoration: none;
+    text-align: left;
+}
+
+.searchResult{
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.searchResult:hover {
+    background: rgba(67, 88, 117, 0.05);
+}
+
+.searchResultsList h2 {
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 14px;
+    color: #435875;
+    margin: 0 0 2px 0;
+}
+
+.searchResultsList h3 {
+    font-family: Inter;
+    font-weight: 400;
+    font-size: 12px;
+    color: #899fb7;
+    margin: 0;
+}
+
+.invisible{
+    opacity: 0;
+    height: 0px;
+}
+
+.divider{
+    height: 1px;
+    margin: 0 12px;
+    background: rgba(67, 88, 117, 0.12);
+}
+
+.divider:last-child{
+    display: none;
+}

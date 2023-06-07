@@ -23,7 +23,6 @@ const ReceptionsList = observer(() => {
     const [doctors, setDoctors] = useState([])
     const [procedures, setProcedures] = useState([])
     const [searchDoctor, setSearchDoctor] = useState(false)
-    const {clients} = useContext(Context)
 
     //new reception fields
     const [searchName, setSearchName] = useState("")
@@ -40,6 +39,7 @@ const ReceptionsList = observer(() => {
     const [show, setShow] = useState(false);
     const [searchDate, setSearchDate] = useState("")
     const [isSearchDate, setIsSearchDate] = useState(false)
+
 
 
     const handleClose = () => {
@@ -90,7 +90,7 @@ const ReceptionsList = observer(() => {
     useEffect(() => {
         if(searchName.length > 2) {
             const delayDebounceFn = setTimeout(() => {
-                getAllClients(clients.page, 100, searchName).then((data: any) => {
+                getAllClients(1, 100, searchName).then((data: any) => {
                     setSearchResult(data.data.rows)
                 })
             }, 500)
